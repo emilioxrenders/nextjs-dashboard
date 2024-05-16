@@ -1,1 +1,1 @@
-Project to showcase Nextjs skills with Pexels API
+Project to showcase Nextjs skills with Pexels API.
