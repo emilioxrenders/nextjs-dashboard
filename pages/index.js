@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Layout from '../components/layout';
 import Link from 'next/link';
 import Image from 'next/image'
-import Hero from '../components/hero';
+import Header from '../components/hero';
 
 const PER_PAGE = 15;
 
@@ -28,7 +28,7 @@ export async function getServerSideProps(context) {
 export default function Home({ photos, page }) {
   return (
     <>
-    <Hero />
+    <Header />
     <Layout>
       {/* Metadata */}
       <Head>
