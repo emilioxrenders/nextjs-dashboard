@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Layout from '../components/layout';
 import Link from 'next/link';
 import Image from 'next/image'
-import Header from '../components/hero';
+import Header from '../components/header';
 
 const PER_PAGE = 15;
 
