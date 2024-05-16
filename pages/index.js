@@ -40,7 +40,7 @@ export default function Home({ photos, page }) {
         {/* Title */}
         <div className='flex flex-col gap-2 mb-10'>
             <h1 className='text-2xl'>Nextjs Pexels Project</h1>
-            <p>Welcome to my little project working with <Link href="https://www.pexels.com/" target='_blank' className='relative after:w-0 after:transition-all after:duration-200 after:left-0 after:absolute after:bg-black after:h-px after:hover:w-full after:ease-in-out after:bottom-0'>Pexels'</Link> API. This project displays a paginated list of images that navigate to a dedicated page for each image. Curious to see how I made this? Check it out<Link href="https://github.com/emilioxrenders/nextjs-pexels" target='_blank' className='relative after:w-0 after:transition-all after:duration-200 after:left-0 after:absolute after:bg-black after:h-px after:hover:w-full after:ease-in-out after:bottom-0'>here!</Link></p>
+            <p>Welcome to my little project working with <Link href="https://www.pexels.com/" target='_blank' className='relative after:w-0 after:transition-all after:duration-200 after:left-0 after:absolute after:bg-black after:h-px after:hover:w-full after:ease-in-out after:bottom-0'>Pexels'</Link> API. This project displays a paginated list of images that navigate to a dedicated page for each image. Curious to see how I made this? Check it out <Link href="https://github.com/emilioxrenders/nextjs-pexels" target='_blank' className='relative after:w-0 after:transition-all after:duration-200 after:left-0 after:absolute after:bg-black after:h-px after:hover:w-full after:ease-in-out after:bottom-0'>here!</Link></p>
         </div>
 
         {/* Photo list */}
