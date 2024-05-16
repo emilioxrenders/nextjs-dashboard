@@ -1,131 +1,78 @@
 import Head from 'next/head';
-import styles from '../styles/Home.module.css';
+import Layout from '../components/layout';
+import Link from 'next/link';
+import Image from 'next/image'
+import Hero from '../components/hero';
 
-export default function Home() {
+const PER_PAGE = 15;
+
+export async function getServerSideProps(context) {
+  const page = context.query.page || 1;
+
+  const res = await fetch(`https://api.pexels.com/v1/curated?per_page=${PER_PAGE}&page=${page}`, {
+    headers: {
+      Authorization: process.env.PEXELS_API_KEY,
+    },
+  });
+
+  const data = await res.json();
+
+  return {
+    props: {
+      photos: data.photos,
+      page: parseInt(page, 10),
+    },
+  };
+}
+
+export default function Home({ photos, page }) {
   return (
-    <div className={styles.container}>
+    <>
+    <Hero />
+    <Layout>
+      {/* Metadata */}
       <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>Pexels Project</title>
       </Head>
 
-      <main>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing <code>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+      {/* Page */}
+      <div>
+        {/* Title */}
+        <div className='flex flex-col gap-2 mb-10'>
+          <h1 className='text-2xl'>Nextjs Pexels Project</h1>
+          <p>Welcome to my little project working with <Link href="https://www.pexels.com/" target='_blank' className='relative after:w-0 after:transition-all after:duration-200 after:left-0 after:absolute after:bg-black after:h-px after:hover:w-full after:ease-in-out after:bottom-0'>Pexels'</Link> API. This project displays a paginated list of images that navigate to a dedicated page for each image. Curious to see how I made this? Check it out here!</p>
         </div>
-      </main>
 
-      <footer>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel" className={styles.logo} />
-        </a>
-      </footer>
+        {/* Photo list */}
+        <div className='flex flex-col gap-5'>
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'>
+            {photos.map(photo => (
+              <div key={photo.id} className='flex flex-col gap-1'>
+                <Link href={`/photos/${photo.id}`}>
+                  <Image width={720} height={720} src={photo.src.large} alt={photo.alt} className='w-full shadow' />
+                </Link>
+                <p className='text-sm'>Made by: <Link href={photo.photographer_url} target='_blank' className='relative after:w-0 after:transition-all after:duration-200 after:left-0 after:absolute after:bg-black after:h-px after:hover:w-full after:ease-in-out after:bottom-0'>{photo.photographer}</Link></p>
+              </div>
+            ))}
+          </div>
 
-      <style jsx>{`
-        main {
-          padding: 5rem 0;
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-        footer {
-          width: 100%;
-          height: 100px;
-          border-top: 1px solid #eaeaea;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-        footer img {
-          margin-left: 0.5rem;
-        }
-        footer a {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          text-decoration: none;
-          color: inherit;
-        }
-        code {
-          background: #fafafa;
-          border-radius: 5px;
-          padding: 0.75rem;
-          font-size: 1.1rem;
-          font-family:
-            Menlo,
-            Monaco,
-            Lucida Console,
-            Liberation Mono,
-            DejaVu Sans Mono,
-            Bitstream Vera Sans Mono,
-            Courier New,
-            monospace;
-        }
-      `}</style>
-
-      <style jsx global>{`
-        html,
-        body {
-          padding: 0;
-          margin: 0;
-          font-family:
-            -apple-system,
-            BlinkMacSystemFont,
-            Segoe UI,
-            Roboto,
-            Oxygen,
-            Ubuntu,
-            Cantarell,
-            Fira Sans,
-            Droid Sans,
-            Helvetica Neue,
-            sans-serif;
-        }
-        * {
-          box-sizing: border-box;
-        }
-      `}</style>
-    </div>
+          {/* Pagination */}
+          <div className='flex gap-5'>
+            <Link href={`/?page=1`} className='relative after:w-0 after:transition-all after:duration-200 after:left-0 after:absolute after:bg-black after:h-px after:hover:w-full after:ease-in-out after:bottom-0'>
+              <p>Start</p>
+            </Link>
+            {page > 1 && (
+              <Link href={`/?page=${page - 1}`} className='relative after:w-0 after:transition-all after:duration-200 after:left-0 after:absolute after:bg-black after:h-px after:hover:w-full after:ease-in-out after:bottom-0'>
+                <p>Previous</p>
+              </Link>
+            )}
+            <Link href={`/?page=${page + 1}`} className='relative after:w-0 after:transition-all after:duration-200 after:left-0 after:absolute after:bg-black after:h-px after:hover:w-full after:ease-in-out after:bottom-0'>
+              <p>Next</p>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </Layout>
+    </>
   );
 }
