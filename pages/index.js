@@ -3,6 +3,7 @@ import Layout from '../components/layout';
 import Link from 'next/link';
 import Image from 'next/image'
 import Header from '../components/header';
+import PhotoList from '../components/photoList';
 
 const PER_PAGE = 15;
 
@@ -47,12 +48,7 @@ export default function Home({ photos, page }) {
         <div className='flex flex-col gap-5'>
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'>
             {photos.map(photo => (
-              <div key={photo.id} className='flex flex-col gap-1'>
-                <Link href={`/photos/${photo.id}`}>
-                  <Image width={720} height={720} src={photo.src.large} alt={photo.alt} className='w-full shadow' />
-                </Link>
-                <p className='text-sm'>Made by: <Link href={photo.photographer_url} target='_blank' className='relative after:w-0 after:transition-all after:duration-200 after:left-0 after:absolute after:bg-black after:h-px after:hover:w-full after:ease-in-out after:bottom-0'>{photo.photographer}</Link></p>
-              </div>
+              <PhotoList key={photo.id} photo={photo}></PhotoList>
             ))}
           </div>
 

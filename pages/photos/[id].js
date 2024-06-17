@@ -44,7 +44,7 @@ export default function PhotoPage({ photo }) {
                         height={1280}
                         src={photo.src.large2x}
                         alt={photo.alt}
-                        className='w-full max-w-lg'
+                        className='w-full max-w-lg shadow'
                     />
                     <div className='flex flex-col gap-1'>
                         <h1 className='text-2xl'>Photo by <Link href={photo.photographer_url} target='_blank' className='relative after:w-0 after:transition-all after:duration-200 after:left-0 after:absolute after:bg-black after:h-px after:hover:w-full after:ease-in-out after:bottom-0'>{photo.photographer}</Link></h1>
