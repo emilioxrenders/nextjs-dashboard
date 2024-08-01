@@ -12,7 +12,10 @@ export default function Hero({ image, alt }) {
         alt={alt}
         priority
       />
-      <div className="container px-10 flex flex-col gap-2 lg:max-w-4xl text-center z-10 py-32 lg:py-60">
+      <div
+        className="container px-10 flex flex-col gap-2 lg:max-w-4xl text-center z-10 py-32 lg:py-60"
+        style={{ textShadow: "2px 2px 4px rgba(0, 0, 0, 0.3)" }}
+      >
         <h1 className="text-2xl lg:text-4xl text-white">
           Next.js Pexels Project
         </h1>
