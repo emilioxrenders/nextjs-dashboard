@@ -3,17 +3,17 @@ import Link from "next/link";
 
 export default function Hero({ image, alt }) {
   return (
-    <div className="relative w-full h-[600px] lg:h-[720px] flex items-center justify-center shadow">
+    <div className="relative w-full flex items-center justify-center shadow">
       <Image
         src={`/images/${image}`}
-        className="w-full h-full object-center object-cover"
+        className="w-full h-full absolute object-center object-cover"
         width={1080}
         height={1080}
         alt={alt}
         priority
       />
       <div
-        className="absolute container px-10 flex flex-col gap-2 lg:max-w-4xl text-center"
+        className="container px-10 flex flex-col gap-2 lg:max-w-4xl text-center z-10 py-32 lg:py-60"
         style={{ textShadow: "2px 2px 4px rgba(0, 0, 0, 0.35)" }}
       >
         <h1 className="text-2xl lg:text-4xl text-white">
