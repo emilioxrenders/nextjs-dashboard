@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Hero({ image, alt }) {
   return (
-    <div className="relative w-full h-[500px] lg:h-[720px] flex items-center justify-center shadow">
+    <div className="relative w-full h-[600px] lg:h-[720px] flex items-center justify-center shadow">
       <Image
         src={`/images/${image}`}
         className="w-full h-full object-center object-cover"
