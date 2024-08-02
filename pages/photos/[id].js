@@ -37,7 +37,7 @@ export default function PhotoPage({ photo }) {
         <div className="flex flex-col gap-10">
           <Link
             href="/"
-            className="w-fit relative after:w-0 after:transition-all after:duration-200 after:left-0 after:absolute after:bg-black after:h-px after:hover:w-full after:ease-in-out after:bottom-0"
+            className="w-fit relative after:w-full after:transition-all after:duration-200 after:left-0 after:absolute after:bg-black after:h-px after:hover:w-0 after:ease-in-out after:bottom-0"
           >
             Back to home
           </Link>
