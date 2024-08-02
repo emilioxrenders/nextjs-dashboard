@@ -54,21 +54,21 @@ export default function Home({ photos, page }) {
           <div className="flex gap-5">
             <Link
               href={`/?page=1`}
-              className="relative after:w-0 after:transition-all after:duration-200 after:left-0 after:absolute after:bg-black after:h-px after:hover:w-full after:ease-in-out after:bottom-0"
+              className="relative after:w-full after:transition-all after:duration-200 after:left-0 after:absolute after:bg-black after:h-px after:hover:w-0 after:ease-in-out after:bottom-0"
             >
               <p>Start</p>
             </Link>
             {page > 1 && (
               <Link
                 href={`/?page=${page - 1}`}
-                className="relative after:w-0 after:transition-all after:duration-200 after:left-0 after:absolute after:bg-black after:h-px after:hover:w-full after:ease-in-out after:bottom-0"
+                className="relative after:w-full after:transition-all after:duration-200 after:left-0 after:absolute after:bg-black after:h-px after:hover:w-0 after:ease-in-out after:bottom-0"
               >
                 <p>Previous</p>
               </Link>
             )}
             <Link
               href={`/?page=${page + 1}`}
-              className="relative after:w-0 after:transition-all after:duration-200 after:left-0 after:absolute after:bg-black after:h-px after:hover:w-full after:ease-in-out after:bottom-0"
+              className="relative after:w-full after:transition-all after:duration-200 after:left-0 after:absolute after:bg-black after:h-px after:hover:w-0 after:ease-in-out after:bottom-0"
             >
               <p>Next</p>
             </Link>
