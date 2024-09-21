@@ -1,78 +1,65 @@
+import { useState } from "react";
 import Head from "next/head";
 import Layout from "../components/layout";
-import Link from "next/link";
 import Header from "../components/header";
-import PhotoList from "../components/photoList";
+import List from "../components/list";
 import Hero from "../components/hero";
 
-const PER_PAGE = 9;
-
-export async function getServerSideProps(context) {
-  const page = context.query.page || 1;
-
-  const res = await fetch(
-    `https://api.pexels.com/v1/curated?per_page=${PER_PAGE}&page=${page}`,
-    {
-      headers: {
-        Authorization: process.env.PEXELS_API_KEY,
-      },
-    }
-  );
+export async function getServerSideProps() {
+  const res = await fetch(process.env.API_URL, {
+    headers: {
+      Authorization: process.env.API_KEY,
+    },
+  });
 
   const data = await res.json();
 
+  console.log(data);
+
   return {
     props: {
-      photos: data.photos,
-      page: parseInt(page, 10),
+      data: data,
     },
   };
 }
 
-export default function Home({ photos, page }) {
+export default function Home({ data }) {
+  const predictionsArray = Object.entries(data);
+  const itemsPerPage = 10;
+  const [visibleItems, setVisibleItems] = useState(itemsPerPage);
+
+  const handleLoadMore = () => {
+    setVisibleItems((prev) => prev + itemsPerPage);
+  };
+
   return (
     <>
       <Header />
-      <Hero image="mountains.webp" alt="Mountains" />
+      <Hero />
 
       {/* Page */}
       <Layout>
         {/* Metadata */}
         <Head>
-          <title>Pexels Project</title>
+          <title>Nextjs Dashboard</title>
         </Head>
 
-        {/* Photo list */}
+        {/* List */}
         <div className="flex flex-col gap-5">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {photos.map((photo) => (
-              <PhotoList key={photo.id} photo={photo}></PhotoList>
+            {predictionsArray.slice(0, visibleItems).map(([id, prediction]) => (
+              <List key={id} prediction={prediction}></List>
             ))}
           </div>
 
-          {/* Pagination */}
-          <div className="flex gap-5">
-            <Link
-              href={`/?page=1`}
-              className="relative after:w-full after:transition-all after:duration-200 after:left-0 after:absolute after:bg-black after:h-px after:hover:w-0 after:ease-in-out after:bottom-0"
+          {visibleItems < predictionsArray.length && (
+            <button
+              className="bg-gray-800 text-white py-2 px-6 rounded w-full"
+              onClick={handleLoadMore}
             >
-              <p>Start</p>
-            </Link>
-            {page > 1 && (
-              <Link
-                href={`/?page=${page - 1}`}
-                className="relative after:w-full after:transition-all after:duration-200 after:left-0 after:absolute after:bg-black after:h-px after:hover:w-0 after:ease-in-out after:bottom-0"
-              >
-                <p>Previous</p>
-              </Link>
-            )}
-            <Link
-              href={`/?page=${page + 1}`}
-              className="relative after:w-full after:transition-all after:duration-200 after:left-0 after:absolute after:bg-black after:h-px after:hover:w-0 after:ease-in-out after:bottom-0"
-            >
-              <p>Next</p>
-            </Link>
-          </div>
+              Load More
+            </button>
+          )}
         </div>
       </Layout>
     </>
