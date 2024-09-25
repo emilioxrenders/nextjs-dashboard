@@ -115,9 +115,9 @@ export default function SignalCard({ signal }: SignalCardProps) {
       </div>
 
       {/* Section */}
-      <div className="flex flex-col text-gray-500 text-sm">
-        <span>Signal age:</span>
-        <span>{signalAge}</span>
+      <div className="flex flex-col text-sm">
+        <span className="text-gray-500">Signal age:</span>
+        <span>{signalAge ? signalAge : "Loading..."}</span>
       </div>
     </div>
 
