@@ -18,7 +18,6 @@ export default function SignalCard({ signal }: SignalCardProps) {
 
   const [birthTime, setBirthTime] = useState<string>('');
   const [publicationTime, setPublicationTime] = useState<string>('');
-  const [currentTime, setCurrentTime] = useState<string>(new Date().toUTCString());
   const [signalAge, setSignalAge] = useState<string>('');
   const [isMounted, setIsMounted] = useState(false);
 
@@ -32,12 +31,9 @@ export default function SignalCard({ signal }: SignalCardProps) {
     const intervalId = setInterval(() => {
       if (isMounted) {
         const now = new Date();
-
-        // Calculate the signal age (difference between current time and publication time)
         const publicationDate = new Date(signal.signal_publication_time);
-        const timeDifference = now.getTime() - publicationDate.getTime(); // Difference in milliseconds
+        const timeDifference = now.getTime() - publicationDate.getTime();
 
-        // Convert the time difference to days, hours, minutes, and seconds
         const totalSeconds = Math.floor(timeDifference / 1000);
         const totalMinutes = Math.floor(totalSeconds / 60);
         const totalHours = Math.floor(totalMinutes / 60);
@@ -46,7 +42,6 @@ export default function SignalCard({ signal }: SignalCardProps) {
         const minutes = totalMinutes % 60;
         const seconds = totalSeconds % 60;
 
-        // Format the result as 'X days, X hours, X minutes, X seconds'
         const formattedAge = `${days} day${days !== 1 ? 's' : ''}, ${hours} hour${hours !== 1 ? 's' : ''}, ${minutes} minute${minutes !== 1 ? 's' : ''}, ${seconds} second${seconds !== 1 ? 's' : ''}`;
 
         setSignalAge(formattedAge);
@@ -60,6 +55,7 @@ export default function SignalCard({ signal }: SignalCardProps) {
   }
 
   return (
+    // Section
     <div className="w-full bg-white rounded shadow p-5 gap-5 flex flex-col">
       {/* Section */}
       <div className="flex flex-col">
@@ -120,6 +116,5 @@ export default function SignalCard({ signal }: SignalCardProps) {
         <span>{signalAge ? signalAge : "Loading..."}</span>
       </div>
     </div>
-
   );
 }
