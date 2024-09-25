@@ -4,7 +4,6 @@ import Head from "next/head";
 import Layout from "../components/layout";
 import Header from "../components/header";
 import SignalCard from "../components/signalCard";
-import Hero from "../components/hero";
 import { SignalApiResponse } from "../types/signal";
 
 interface HomeProps {
@@ -28,7 +27,7 @@ export async function getServerSideProps() {
 }
 
 export default function Home({ data }: HomeProps) {
-  const predictionsArray = Object.entries(data);
+  const predictionsArray = Object.entries(data).reverse();
   const itemsPerPage = 10;
   const [visibleItems, setVisibleItems] = useState(itemsPerPage);
 
@@ -39,7 +38,6 @@ export default function Home({ data }: HomeProps) {
   return (
     <>
       <Header />
-      <Hero />
 
       {/* Page */}
       <Layout>
@@ -50,7 +48,7 @@ export default function Home({ data }: HomeProps) {
 
         {/* List */}
         <div className="flex flex-col gap-5">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mx-auto">
             {predictionsArray.slice(0, visibleItems).map(([id, signal]) => (
               <SignalCard key={id} signal={signal}></SignalCard>
             ))}
