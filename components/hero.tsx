@@ -1,3 +1,5 @@
+import React from "react";
+
 export default function Hero() {
   return (
     <div className="relative container mx-auto px-10 py-20 w-full flex items-center justify-center font-display font-light">

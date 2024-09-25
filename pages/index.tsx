@@ -1,20 +1,24 @@
+import React from "react";
 import { useState } from "react";
 import Head from "next/head";
 import Layout from "../components/layout";
 import Header from "../components/header";
-import List from "../components/list";
+import SignalCard from "../components/signalCard";
 import Hero from "../components/hero";
+import { SignalApiResponse } from "../types/signal";
+
+interface HomeProps {
+  data: SignalApiResponse;
+}
 
 export async function getServerSideProps() {
-  const res = await fetch(process.env.API_URL, {
+  const res = await fetch(process.env.API_URL as string, {
     headers: {
-      Authorization: process.env.API_KEY,
+      Authorization: process.env.API_KEY as string,
     },
   });
 
-  const data = await res.json();
-
-  console.log(data);
+  const data: SignalApiResponse = await res.json();
 
   return {
     props: {
@@ -23,7 +27,7 @@ export async function getServerSideProps() {
   };
 }
 
-export default function Home({ data }) {
+export default function Home({ data }: HomeProps) {
   const predictionsArray = Object.entries(data);
   const itemsPerPage = 10;
   const [visibleItems, setVisibleItems] = useState(itemsPerPage);
@@ -47,8 +51,8 @@ export default function Home({ data }) {
         {/* List */}
         <div className="flex flex-col gap-5">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {predictionsArray.slice(0, visibleItems).map(([id, prediction]) => (
-              <List key={id} prediction={prediction}></List>
+            {predictionsArray.slice(0, visibleItems).map(([id, signal]) => (
+              <SignalCard key={id} signal={signal}></SignalCard>
             ))}
           </div>
 

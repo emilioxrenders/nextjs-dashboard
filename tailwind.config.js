@@ -8,9 +8,8 @@ module.exports = {
   theme: {
     extend: {},
     fontFamily: {
-      'display': ['Montserrat', 'ui-sans-serif'],
-    }
+      display: ["Montserrat", "ui-sans-serif"],
+    },
   },
   plugins: [],
-}
-
+};
