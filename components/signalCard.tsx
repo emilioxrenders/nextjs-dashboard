@@ -16,23 +16,53 @@ export default function SignalCard({ signal }: SignalCardProps) {
     }
   }
 
-  // State to hold formatted dates for client-side rendering
   const [birthTime, setBirthTime] = useState<string>('');
   const [publicationTime, setPublicationTime] = useState<string>('');
+  const [currentTime, setCurrentTime] = useState<string>(new Date().toUTCString());
+  const [signalAge, setSignalAge] = useState<string>('');
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    // Convert dates on the client side to avoid hydration errors
     setBirthTime(new Date(signal.signal_birth_time).toLocaleString());
     setPublicationTime(new Date(signal.signal_publication_time).toLocaleString());
   }, [signal.signal_birth_time, signal.signal_publication_time]);
 
+  useEffect(() => {
+    setIsMounted(true)
+    const intervalId = setInterval(() => {
+      if (isMounted) {
+        const now = new Date();
+
+        // Calculate the signal age (difference between current time and publication time)
+        const publicationDate = new Date(signal.signal_publication_time);
+        const timeDifference = now.getTime() - publicationDate.getTime(); // Difference in milliseconds
+
+        // Convert the time difference to days, hours, minutes, and seconds
+        const totalSeconds = Math.floor(timeDifference / 1000);
+        const totalMinutes = Math.floor(totalSeconds / 60);
+        const totalHours = Math.floor(totalMinutes / 60);
+        const days = Math.floor(totalHours / 24);
+        const hours = totalHours % 24;
+        const minutes = totalMinutes % 60;
+        const seconds = totalSeconds % 60;
+
+        // Format the result as 'X days, X hours, X minutes, X seconds'
+        const formattedAge = `${days} day${days !== 1 ? 's' : ''}, ${hours} hour${hours !== 1 ? 's' : ''}, ${minutes} minute${minutes !== 1 ? 's' : ''}, ${seconds} second${seconds !== 1 ? 's' : ''}`;
+
+        setSignalAge(formattedAge);
+      }
+    }, 1000);
+    return () => clearInterval(intervalId);
+  }, [isMounted, signal.signal_publication_time]);
+
+  if (!isMounted) {
+    return null;
+  }
+
   return (
-    <div className="max-w-sm w-full bg-white rounded-lg shadow-md p-5 gap-5 flex flex-col">
-      {/* Header */}
+    <div className="w-full bg-white rounded shadow p-5 gap-5 flex flex-col">
+      {/* Section */}
       <div className="flex flex-col">
-        {/* <span className="text-sm text-gray-500 truncate" title={signalId}>
-          {signalId}
-        </span> */}
         <span className={`text-2xl font-bold ${predictionColor}`}>
           {signal.prediction}
         </span>
@@ -42,7 +72,7 @@ export default function SignalCard({ signal }: SignalCardProps) {
           </div>
       </div>
 
-      {/* Body */}
+      {/* Section */}
       <div className="grid grid-cols-2 gap-5">
         <div className="flex flex-col">
           <span className="text-gray-400">Reference Price:</span>
@@ -72,19 +102,22 @@ export default function SignalCard({ signal }: SignalCardProps) {
         </div>
       </div>
 
-      {/* Footer */}
+      {/* Section */}
       <div className="grid grid-cols-2 gap-5 text-gray-500 text-sm">
-        {/* <ClockIcon className="h-5 w-5 mr-1" /> */}
         <div className="flex flex-col">
-          <span>Birth:</span>
+          <span>Birth (UTC):</span>
           <span>{birthTime}</span>
         </div>
-        {/* <ClockIcon className="h-5 w-5 mr-1" /> */}
         <div className="flex flex-col">
-          <span>Published:</span>
+          <span>Published (UTC):</span>
           <span>{publicationTime}</span>
         </div>
+      </div>
 
+      {/* Section */}
+      <div className="flex flex-col text-gray-500 text-sm">
+        <span>Signal age:</span>
+        <span>{signalAge}</span>
       </div>
     </div>
 
