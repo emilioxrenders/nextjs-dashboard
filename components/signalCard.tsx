@@ -22,8 +22,8 @@ export default function SignalCard({ signal }: SignalCardProps) {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setBirthTime(new Date(signal.signal_birth_time).toLocaleString());
-    setPublicationTime(new Date(signal.signal_publication_time).toLocaleString());
+    setBirthTime(new Date(signal.signal_birth_time).toUTCString());
+    setPublicationTime(new Date(signal.signal_publication_time).toUTCString());
   }, [signal.signal_birth_time, signal.signal_publication_time]);
 
   useEffect(() => {
