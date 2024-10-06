@@ -22,17 +22,19 @@ export default function SignalCard({ signal }: SignalCardProps) {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setBirthTime(new Date(signal.signal_birth_time).toUTCString());
-    setPublicationTime(new Date(signal.signal_publication_time).toUTCString());
+    setBirthTime(new Date(signal.signal_birth_time).toLocaleString());
+    setPublicationTime(new Date(signal.signal_publication_time).toLocaleString());
   }, [signal.signal_birth_time, signal.signal_publication_time]);
 
   useEffect(() => {
     setIsMounted(true)
     const intervalId = setInterval(() => {
       if (isMounted) {
-        const now = new Date();
-        const publicationDate = new Date(signal.signal_publication_time);
-        const timeDifference = now.getTime() - publicationDate.getTime();
+        const nowUTC = Date.now(); 
+
+        const publicationDate = new Date(signal.signal_publication_time + 'Z').getTime();
+        
+        const timeDifference = nowUTC - publicationDate;
 
         const totalSeconds = Math.floor(timeDifference / 1000);
         const totalMinutes = Math.floor(totalSeconds / 60);
